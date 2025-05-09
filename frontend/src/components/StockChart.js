@@ -102,6 +102,11 @@ const StockChart = ({ stockData, ticker }) => {
                         angle={-45}
                         textAnchor="end"
                         height={60}
+                        tickFormatter={(value) => {
+                            // Shorter date format
+                            const date = new Date(value);
+                            return format(date, 'MM/dd HH:mm');
+                          }}
                     />
                     <YAxis
                         domain={['auto', 'auto']}
