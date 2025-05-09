@@ -18,7 +18,6 @@ const getAuthToken = async () => {
         const response = await axios.post(`${config.stockAPIBaseURL}/auth`, config.credentials);
         const token = response.data.access_token;
 
-        // Cache the token
         cache.set('authToken', token);
 
         return token;
@@ -28,9 +27,7 @@ const getAuthToken = async () => {
     }
 };
 
-/**
- * Get list of available stocks
- */
+
 const getStocks = async () => {
     const cachedStocks = cache.get('stocks');
     if (cachedStocks) {
@@ -46,7 +43,6 @@ const getStocks = async () => {
             }
         });
 
-        // Cache the stocks data
         cache.set('stocks', response.data.stocks);
 
         return response.data.stocks;
@@ -56,14 +52,11 @@ const getStocks = async () => {
     }
 };
 
-/**
- * Get price history for a specific stock
- */
+
 const getStockPriceHistory = async (ticker, minutes) => {
     const cacheKey = `${ticker}_${minutes}`;
     const cachedHistory = cache.get(cacheKey);
 
-    // Use cached data if available
     if (cachedHistory) {
         return cachedHistory;
     }
@@ -84,11 +77,9 @@ const getStockPriceHistory = async (ticker, minutes) => {
 
         let priceHistory;
 
-        // API returns different formats based on whether minutes parameter is provided
         if (minutes) {
             priceHistory = response.data;
         } else {
-            // Single price point case
             priceHistory = [response.data.stock];
         }
 
